@@ -29,6 +29,9 @@ jobs:
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
+        with:
+          # 如果仓库还没开启 Pages，让这个步骤自动开启，省掉手工点设置
+          enablement: true
 
       - name: Install dependencies
         run: npm ci

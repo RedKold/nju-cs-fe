@@ -1,10 +1,11 @@
 import { defineConfig } from 'vitepress'
 
 /**
- * 站点部署在 https://<用户名>.github.io/cs-fe-wiki/
+ * 站点部署在 https://redkold.github.io/nju-cs-fe/
+ * BASE 必须和仓库名一致，否则部署后所有资源都会 404。
  * 如果仓库名改成 <用户名>.github.io，把 base 改成 '/' 即可。
  */
-const BASE = '/cs-fe-wiki/'
+const BASE = '/nju-cs-fe/'
 
 export default defineConfig({
   lang: 'zh-CN',
@@ -106,10 +107,10 @@ export default defineConfig({
 
     // 换成你自己的 GitHub 地址后，右上角会显示仓库链接，页面底部会有「编辑此页」
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/redkold/cs-fe-wiki' }
+      { icon: 'github', link: 'https://github.com/RedKold/nju-cs-fe' }
     ],
     editLink: {
-      pattern: 'https://github.com/redkold/cs-fe-wiki/edit/main/docs/:path',
+      pattern: 'https://github.com/RedKold/nju-cs-fe/edit/main/docs/:path',
       text: '在 GitHub 上编辑此页'
     },
 

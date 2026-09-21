@@ -3,7 +3,7 @@
 计算机基础与前端的个人知识库，基于 [VitePress](https://vitepress.dev) 构建，
 发布在 GitHub Pages。
 
-线上地址：`https://redkold.github.io/cs-fe-wiki/`
+线上地址：`https://redkold.github.io/nju-cs-fe/`
 
 ## 本地开发
 
@@ -56,4 +56,5 @@ npm run docs:preview   # 本地预览构建产物
 
 推送到 `main` 分支后，GitHub Actions 自动构建并部署，约 1～2 分钟生效。
 
-如果仓库改名为 `<用户名>.github.io`，需要把 `config.mts` 里的 `BASE` 改成 `'/'`。
+`config.mts` 里的 `BASE` 必须和仓库名保持一致（当前是 `/nju-cs-fe/`）。
+如果仓库改名为 `<用户名>.github.io`，把 `BASE` 改成 `'/'`。
