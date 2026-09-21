@@ -1,0 +1,13 @@
+.DS_Store
+node_modules/
+*.log
+
+# VitePress
+docs/.vitepress/dist
+docs/.vitepress/cache
+docs/.vitepress/.temp
+
+# 编辑器
+.idea/
+.vscode/*
+!.vscode/extensions.json
