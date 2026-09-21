@@ -25,22 +25,39 @@
 ```bash
 make install    # 首次安装依赖
 make dev        # 启动本地开发服务器（热更新，默认 5173 端口）
-make check      # 发布前检查：死链、漏挂页面、裸链接、大文件
 make new        # 新建一篇文章，自动生成文件并提示侧边栏写法
-make publish    # 检查通过后提交并推送，触发自动部署
+make check      # 提交前检查：死链、漏挂页面、裸链接、大文件
 make clean      # 清理构建产物与缓存
 ```
 
-不想记 git 命令的话，日常只需要这三条：
+### 贡献者：走 PR 流程
+
+仓库采用 PR 流程，改动经审阅合并进 `main` 后才会部署上线。
 
 ```bash
-make dev                     # 写作与预览
-make check                   # 提交前自查
-make publish MSG="docs: 补充推免材料"
+make branch NAME=feat/夏令营经验   # 从最新 main 建分支
+make dev                          # 写作与预览
+make check                        # 自查
+make pr MSG="docs: 补充夏令营经验"   # 提交、推送，并打印 PR 链接
 ```
 
-`make publish` 默认提交信息是 `docs: 更新站点内容`，用 `MSG=` 可以覆盖。
-它会先跑 `make check`，**检查不通过就不会提交**，避免把死链推到线上。
+没有写权限的同学先 Fork 仓库，再把原仓库加为 `upstream`，`make branch` 会自动从上游拉取：
+
+```bash
+git remote add upstream git@github.com:RedKold/nju-cs-fe.git
+```
+
+详细说明见[如何贡献](https://redkold.github.io/nju-cs-fe/guide/contributing)。
+
+### 维护者：直接发布
+
+```bash
+make sync                         # 切回 main 并拉取最新代码
+make publish MSG="docs: ..."      # 只允许在 main 上执行，直接上线
+```
+
+`make pr` 和 `make publish` 都会先跑 `make check`，**检查不通过就不会提交**，避免把死链推到线上。
+提交信息默认是 `docs: 更新站点内容`，用 `MSG=` 可以覆盖。
 
 ### make check 具体查什么
 

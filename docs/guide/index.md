@@ -31,12 +31,19 @@
 
 ## 怎么贡献
 
-任何同学都可以补充内容，不需要先问过谁。
+任何同学都可以补充内容，不需要先问过谁。仓库开启了 PR 流程，
+改动会先提交到分支，经审阅后再合并进 `main`，合并后自动部署上线。
 
-1. 在对应板块的目录下新建或修改 Markdown 文件；
-2. 如果新增了文件，记得在 `docs/.vitepress/config.mts` 的 `sidebar` 里加一行；
-3. 我们也推荐你`git clone`本仓库到本地，使用我们的`Makefile`来辅助，也欢迎你聪明的使用agent帮助贡献。
-4. 提一个 Pull Request，说明你改了哪一块、依据是什么。
+完整流程见 **[如何贡献](/guide/contributing)**。最省事的用法是把它交给 Makefile：
+
+```bash
+make install                      # 首次装依赖
+make branch NAME=feat/夏令营经验    # 从最新 main 建分支
+make dev                          # 边写边预览
+make pr                           # 检查 + 推送 + 给出 PR 链接
+```
+
+也欢迎你聪明地使用 agent 帮忙整理和校对。
 
 几条硬规矩：
 

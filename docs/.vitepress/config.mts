@@ -49,7 +49,8 @@ export default defineConfig({
           items: [
             { text: '资料库使用说明', link: '/guide/' },
             { text: '培养方案与课程地图', link: '/guide/curriculum' },
-            { text: '四年时间线', link: '/guide/roadmap' }
+            { text: '四年时间线', link: '/guide/roadmap' },
+            { text: '如何贡献', link: '/guide/contributing' }
           ]
         }
       ],

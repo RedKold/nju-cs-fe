@@ -78,7 +78,8 @@ if command -v rg >/dev/null 2>&1; then
            | sed -E 's/`[^`]*`//g' \
            | rg -n --pcre2 '\]\((?!https?://|/|#|mailto:)(?![^)]*\.md\))[^)]+\)' 2>/dev/null || true)
     [ -n "$hits" ] && bare="${bare}${f}:${hits}"$'\n'
-  done < <(rg --files -g '*.md' "$DOCS" README.md 2>/dev/null | sort)
+  # CONTRIBUTING.md 不在站点里，但同样是给人看的 Markdown，一并检查
+  done < <(rg --files -g '*.md' "$DOCS" README.md CONTRIBUTING.md 2>/dev/null | sort)
 
   if [ -n "$bare" ]; then
     fail "以下链接缺少 https:// 前缀："
