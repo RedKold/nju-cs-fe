@@ -35,7 +35,8 @@
 
 1. 在对应板块的目录下新建或修改 Markdown 文件；
 2. 如果新增了文件，记得在 `docs/.vitepress/config.mts` 的 `sidebar` 里加一行；
-3. 提一个 Pull Request，说明你改了哪一块、依据是什么。
+3. 我们也推荐你`git clone`本仓库到本地，使用我们的`Makefile`来辅助，也欢迎你聪明的使用agent帮助贡献。
+4. 提一个 Pull Request，说明你改了哪一块、依据是什么。
 
 几条硬规矩：
 

@@ -68,15 +68,37 @@ new: ## 新建一篇文章（自动生成文件并提示侧边栏写法）
 	echo "  { text: '$$title', link: '/$$sect/$$slug' }"; \
 	echo "（忘了也没关系，make check 会提醒你）"
 
-publish: check ## 检查通过后提交并推送，触发自动部署
-	@git add -A
-	@if git diff --cached --quiet; then \
+publish: check ## 检查通过后提交，并推送 main 触发部署
+	@set -e; \
+	branch=$$(git rev-parse --abbrev-ref HEAD); \
+	git add -A; \
+	if git diff --cached --quiet; then \
 		echo "没有需要提交的改动。"; \
+		exit 0; \
+	fi; \
+	git commit -m "$(MSG)"; \
+	if [ "$$branch" = "main" ]; then \
+		git push -u origin main; \
+	elif git merge-base --is-ancestor origin/main HEAD; then \
+		echo; \
+		echo "当前在 $$branch 分支，但站点只从 main 部署。"; \
+		echo "把 main 快进到当前提交并推送…"; \
+		git branch -f main HEAD; \
+		git push origin main; \
+		echo "（$$branch 仍保留，且与 main 指向同一提交）"; \
 	else \
-		git commit -m "$(MSG)" && git push && echo "已推送，约 1～2 分钟后生效。"; \
-	fi
+		echo; \
+		echo "错误：$$branch 与 origin/main 已经分叉，无法自动快进。"; \
+		echo "请先手工合并：git switch main && git merge $$branch"; \
+		exit 1; \
+	fi; \
+	echo; \
+	echo "已推送，约 1～2 分钟后生效：https://redkold.github.io/nju-cs-fe/"
 
-status: ## 查看仓库当前状态
+status: ## 查看分支、上游与仓库状态
+	@echo "当前分支：$$(git rev-parse --abbrev-ref HEAD)"
+	@echo "上游分支：$$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null || echo '未设置（push 会失败）')"
+	@echo
 	@git status --short --branch
 	@echo
 	@git log --oneline -5
