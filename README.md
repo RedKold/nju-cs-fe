@@ -18,33 +18,58 @@
 | 实习就业 | `docs/career/` | 方向介绍、实习节奏、量化岗位技能栈 |
 | 资源区 | `docs/resources/` | 教材课件、历年真题、模板的下载链接 |
 
-## 本地开发
+## 日常维护
+
+常用操作都收在 `Makefile` 里，直接运行 `make` 会列出全部命令。
 
 ```bash
-npm install        # 首次
-npm run docs:dev   # 启动开发服务器，改 md 会自动热更新
+make install    # 首次安装依赖
+make dev        # 启动本地开发服务器（热更新，默认 5173 端口）
+make check      # 发布前检查：死链、漏挂页面、裸链接、大文件
+make new        # 新建一篇文章，自动生成文件并提示侧边栏写法
+make publish    # 检查通过后提交并推送，触发自动部署
+make clean      # 清理构建产物与缓存
 ```
 
-开发服务器默认在 <http://localhost:5173>。
-
-## 构建与预览产物
+不想记 git 命令的话，日常只需要这三条：
 
 ```bash
-npm run docs:build     # 产物在 docs/.vitepress/dist
-npm run docs:preview   # 本地预览构建产物
+make dev                     # 写作与预览
+make check                   # 提交前自查
+make publish MSG="docs: 补充推免材料"
 ```
 
-`docs/.vitepress/dist` 是纯静态 HTML/CSS/JS，可以直接丢给任意静态托管。
-该目录已加入 `.gitignore`，不需要提交。
+`make publish` 默认提交信息是 `docs: 更新站点内容`，用 `MSG=` 可以覆盖。
+它会先跑 `make check`，**检查不通过就不会提交**，避免把死链推到线上。
+
+### make check 具体查什么
+
+| 检查项 | 拦截的问题 |
+| --- | --- |
+| 站内链接 | `config.mts` 里指向了不存在的文件 |
+| 页面挂载 | 新建了 md 但忘了加进侧边栏，读者根本点不到 |
+| 裸链接 | `[文字](box.nju.edu.cn)` 这种缺 `https://` 的写法，发布后必然 404 |
+| 大文件 | 超过 50 MB 的文件，GitHub 单文件上限 100 MB 且提交后无法轻易删除 |
+
+此外 `make check` 会先构建一次，VitePress 自带的死链检测也在这一步生效。
 
 ## 新增文章
 
-1. 在对应板块目录下新建 `xxx.md`，用一级标题开头；
-2. 在 `docs/.vitepress/config.mts` 对应的 `sidebar` 里加一行：
+推荐用 `make new`，它会引导你填板块、文件名和标题，自动生成带标准骨架的文件，
+并打印出该加进 `config.mts` 的那一行：
+
+```bash
+make new
+```
+
+也可以手工创建：在对应板块目录下新建 `xxx.md`，用一级标题开头，
+然后在 `docs/.vitepress/config.mts` 对应的 `sidebar` 里加一行：
 
 ```ts
 { text: '显示的名字', link: '/板块/xxx' }
 ```
+
+忘了加也没关系，`make check` 会提醒你，并直接给出该写的那一行。
 
 正文标题层级建议只用到 `##` 和 `###`，它们会自动出现在右侧「本页目录」。
 
