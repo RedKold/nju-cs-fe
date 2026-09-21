@@ -9,8 +9,8 @@ const BASE = '/nju-cs-fe/'
 
 export default defineConfig({
   lang: 'zh-CN',
-  title: 'CS & FE Wiki',
-  description: '计算机基础与前端的个人知识库',
+  title: '计算机金融实验班',
+  description: '南京大学计算机金融实验班资料库：课程资料、推免与出国经验',
   base: BASE,
 
   cleanUrls: true,
@@ -18,7 +18,7 @@ export default defineConfig({
 
   head: [
     ['link', { rel: 'icon', type: 'image/svg+xml', href: `${BASE}logo.svg` }],
-    ['meta', { name: 'theme-color', content: '#3e63dd' }]
+    ['meta', { name: 'theme-color', content: '#5b21b6' }]
   ],
 
   markdown: {
@@ -29,46 +29,109 @@ export default defineConfig({
     logo: '/logo.svg',
 
     nav: [
-      { text: '首页', link: '/' },
+      { text: '使用指南', link: '/guide/' },
+      { text: '课程资料', link: '/courses/' },
       {
-        text: '知识板块',
+        text: '升学',
         items: [
-          { text: '前端', link: '/web/' },
-          { text: '计算机基础', link: '/cs/' },
-          { text: '工程化', link: '/engineering/' }
+          { text: '推免', link: '/postgrad/' },
+          { text: '出国', link: '/abroad/' }
         ]
-      }
+      },
+      { text: '实习就业', link: '/career/' },
+      { text: '资源区', link: '/resources/' }
     ],
 
     sidebar: {
-      '/web/': [
+      '/guide/': [
         {
-          text: '前端',
+          text: '使用指南',
           items: [
-            { text: '总览', link: '/web/' },
-            { text: 'HTML', link: '/web/html' },
-            { text: 'CSS', link: '/web/css' },
-            { text: 'JavaScript', link: '/web/javascript' }
+            { text: '资料库使用说明', link: '/guide/' },
+            { text: '培养方案与课程地图', link: '/guide/curriculum' },
+            { text: '四年时间线', link: '/guide/roadmap' }
           ]
         }
       ],
-      '/cs/': [
+      '/courses/': [
         {
-          text: '计算机基础',
+          text: '课程资料',
           items: [
-            { text: '总览', link: '/cs/' },
-            { text: '数据结构与算法', link: '/cs/algorithm' },
-            { text: '计算机网络', link: '/cs/network' }
+            { text: '课程资料总览', link: '/courses/' },
+            { text: '数学与统计', link: '/courses/math' },
+            { text: '计算机', link: '/courses/cs' },
+            { text: '金融与经济', link: '/courses/finance' }
+          ]
+        },
+        {
+          text: '配套资源',
+          items: [
+            { text: '教材与课件', link: '/resources/textbooks' },
+            { text: '历年真题', link: '/resources/past-exams' }
           ]
         }
       ],
-      '/engineering/': [
+      '/postgrad/': [
         {
-          text: '工程化',
+          text: '推免',
           items: [
-            { text: '总览', link: '/engineering/' },
-            { text: 'Git 工作流', link: '/engineering/git' },
-            { text: '构建与打包', link: '/engineering/build' }
+            { text: '推免总览', link: '/postgrad/' },
+            { text: '政策与资格', link: '/postgrad/policy' },
+            { text: '夏令营', link: '/postgrad/summer-camp' },
+            { text: '材料准备', link: '/postgrad/materials' },
+            { text: '面试经验', link: '/postgrad/interview' }
+          ]
+        },
+        {
+          text: '相关',
+          items: [
+            { text: '四年时间线', link: '/guide/roadmap' },
+            { text: '模板下载', link: '/resources/templates' }
+          ]
+        }
+      ],
+      '/abroad/': [
+        {
+          text: '出国',
+          items: [
+            { text: '出国总览', link: '/abroad/' },
+            { text: '申请时间线', link: '/abroad/timeline' },
+            { text: '选校与文书', link: '/abroad/application' },
+            { text: '语言考试', link: '/abroad/language-test' }
+          ]
+        },
+        {
+          text: '相关',
+          items: [
+            { text: '材料准备', link: '/postgrad/materials' },
+            { text: '模板下载', link: '/resources/templates' }
+          ]
+        }
+      ],
+      '/career/': [
+        {
+          text: '实习与就业',
+          items: [
+            { text: '总览', link: '/career/' },
+            { text: '量化方向', link: '/career/quant' }
+          ]
+        },
+        {
+          text: '相关',
+          items: [
+            { text: '课程资料', link: '/courses/' },
+            { text: '材料准备', link: '/postgrad/materials' }
+          ]
+        }
+      ],
+      '/resources/': [
+        {
+          text: '资源区',
+          items: [
+            { text: '资源总索引', link: '/resources/' },
+            { text: '教材与课件', link: '/resources/textbooks' },
+            { text: '历年真题', link: '/resources/past-exams' },
+            { text: '模板', link: '/resources/templates' }
           ]
         }
       ]
@@ -105,7 +168,6 @@ export default defineConfig({
     lightModeSwitchTitle: '切换到浅色模式',
     darkModeSwitchTitle: '切换到深色模式',
 
-    // 换成你自己的 GitHub 地址后，右上角会显示仓库链接，页面底部会有「编辑此页」
     socialLinks: [
       { icon: 'github', link: 'https://github.com/RedKold/nju-cs-fe' }
     ],
@@ -115,8 +177,8 @@ export default defineConfig({
     },
 
     footer: {
-      message: '基于 VitePress 构建',
-      copyright: 'Copyright © 2026 CS & FE Wiki'
+      message: '内容由同学共同维护，涉及硬性规定请以学院与教务处官方文件为准',
+      copyright: 'Copyright © 2026 南京大学计算机金融实验班'
     }
   }
 })

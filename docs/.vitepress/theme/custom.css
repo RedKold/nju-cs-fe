@@ -1,12 +1,12 @@
 /**
- * 主题色。默认的 VitePress 绿换成偏蓝紫的色板，
- * 三个变量分别对应浅色/深色的品牌色和按钮文字色。
+ * 主题色：偏学术的紫蓝色调。
+ * 想换配色只改这里的变量即可，不用动 config.mts。
  */
 :root {
-  --vp-c-brand-1: #3e63dd;
-  --vp-c-brand-2: #5570e6;
-  --vp-c-brand-3: #3e63dd;
-  --vp-c-brand-soft: rgba(62, 99, 221, 0.14);
+  --vp-c-brand-1: #6d28d9;
+  --vp-c-brand-2: #7c3aed;
+  --vp-c-brand-3: #5b21b6;
+  --vp-c-brand-soft: rgba(124, 58, 237, 0.14);
 
   --vp-button-brand-border: transparent;
   --vp-button-brand-text: var(--vp-c-white);
@@ -16,12 +16,23 @@
   --vp-button-brand-hover-bg: var(--vp-c-brand-2);
 
   --vp-home-hero-name-color: transparent;
-  --vp-home-hero-name-background: linear-gradient(120deg, #3e63dd 20%, #8b5cf6);
+  --vp-home-hero-name-background: linear-gradient(120deg, #5b21b6 20%, #8b5cf6);
 }
 
 .dark {
-  --vp-c-brand-1: #8da4f0;
-  --vp-c-brand-2: #6d87e6;
-  --vp-c-brand-3: #4f6bd8;
-  --vp-c-brand-soft: rgba(109, 135, 230, 0.16);
+  --vp-c-brand-1: #c4b5fd;
+  --vp-c-brand-2: #a78bfa;
+  --vp-c-brand-3: #7c3aed;
+  --vp-c-brand-soft: rgba(167, 139, 250, 0.16);
+}
+
+/* 资料页表格较多，稍微收紧一点更好读 */
+.vp-doc table {
+  display: table;
+  width: 100%;
+}
+
+.vp-doc th,
+.vp-doc td {
+  padding: 8px 12px;
 }
