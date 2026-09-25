@@ -8,7 +8,6 @@
 SHELL := /bin/bash
 
 DOCS     := docs
-CONFIG   := $(DOCS)/.vitepress/config.mts
 DIST     := $(DOCS)/.vitepress/dist
 MSG      ?= docs: 更新站点内容
 
@@ -36,6 +35,7 @@ node_modules: package.json package-lock.json
 install: node_modules ## 安装依赖（首次使用）
 
 dev: node_modules ## 启动本地开发服务器（热更新，默认 5173 端口）
+	@echo "提示：新增 .md 文件后侧边栏不会立刻更新，在服务器里按 r 重启即可。"
 	@npm run docs:dev
 
 build: node_modules ## 构建静态站点到 docs/.vitepress/dist
@@ -72,9 +72,13 @@ new: ## 新建一篇文章（自动生成骨架并提示侧边栏写法）
 	} > "$$file"; \
 	echo; \
 	echo "已创建 $$file"; \
-	echo "记得在 $(CONFIG) 对应的 sidebar 里加一行："; \
-	echo "  { text: '$$title', link: '/$$sect/$$slug' }"; \
-	echo "（忘了也没关系，make check 会提醒你）"
+	echo "它会自动出现在侧边栏，不用改任何配置。"; \
+	echo; \
+	echo "想调整它在侧边栏里的位置，在文件开头加 frontmatter："; \
+	echo "  ---"; \
+	echo "  order: 3"; \
+	echo "  ---"; \
+	echo "数字越小越靠前；不写 order 的排在写了 order 的后面。"
 
 branch: ## 从最新 main 新建工作分支：make branch NAME=feat/夏令营经验
 	@set -e; \

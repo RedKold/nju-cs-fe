@@ -6,14 +6,16 @@
 # 不需要额外安装 ripgrep。
 #
 # 检查四件事：
-#   1. config.mts 里的导航/侧边栏链接是否都有对应文件
-#   2. 是否有页面写了但没挂进侧边栏（读者点不到）
+#   1. 板块目录完整：每个板块都有 index.md，且登记在 sidebar.ts 的 SECTIONS 里；
+#      sidebar.ts 与 config.mts 中硬编码的链接都能解析到真实文件
+#   2. 每个页面都有标题 —— 侧边栏显示的文字就取自这里
 #   3. 是否有缺少协议头的链接（会变成相对路径死链）
 #   4. 是否有超过 GitHub 限制的大文件
 
 set -uo pipefail
 
 DOCS="docs"
+SIDEBAR="${DOCS}/.vitepress/sidebar.ts"
 CONFIG="${DOCS}/.vitepress/config.mts"
 FAIL=0
 
@@ -30,7 +32,7 @@ resolve() {
   return 1
 }
 
-# 站内页面（只含 docs/，用于检查是否挂进侧边栏）
+# 站内页面（只含 docs/）
 site_pages() {
   find "$DOCS" -name '*.md' -not -path '*/dist/*' -not -path '*/.temp/*' | sort
 }
@@ -44,43 +46,61 @@ text_files() {
 }
 
 echo
-echo "1/4  导航与侧边栏链接"
-checked=0
-mismatch=""
+echo "1/4  板块目录与侧边栏配置"
+sections=0
+dir_problems=""
+while IFS= read -r d; do
+  name="$(basename "$d")"
+  sections=$((sections + 1))
+  [ -f "${d}/index.md" ] || dir_problems="${dir_problems}  ${d}/ 缺少 index.md"$'\n'
+  grep -q "dir: '${name}'" "$SIDEBAR" \
+    || dir_problems="${dir_problems}  ${name}/ 没有登记在 ${SIDEBAR} 的 SECTIONS 里"$'\n'
+done < <(find "$DOCS" -mindepth 1 -maxdepth 1 -type d \
+           -not -name '.vitepress' -not -name 'public' | sort)
+
+link_problems=""
+links=0
 while IFS= read -r p; do
   [ -z "$p" ] && continue
-  # socialLinks 这类完整网址不是站内路径，跳过
   case "$p" in http*|mailto:*|'#'*) continue ;; esac
-  checked=$((checked + 1))
-  resolve "$p" || mismatch="${mismatch}  ${p}"$'\n'
-done < <(grep -oE "link: '[^']*'" "$CONFIG" | awk -F"'" '{print $2}' | sort -u)
+  links=$((links + 1))
+  resolve "$p" || link_problems="${link_problems}  ${p}"$'\n'
+done < <(grep -hoE "link: '[^']*'" "$SIDEBAR" "$CONFIG" | awk -F"'" '{print $2}' | sort -u)
 
-if [ -n "$mismatch" ]; then
-  fail "配置里指向了不存在的文件："
-  dim "$mismatch"
-elif [ "$checked" -gt 0 ]; then
-  green "  ✓ 检查了 ${checked} 个链接"
+if [ -n "$dir_problems" ] || [ -n "$link_problems" ]; then
+  [ -n "$dir_problems" ] && { fail "板块目录有问题："; dim "$dir_problems"; }
+  [ -n "$link_problems" ] && { fail "以下链接指向不存在的文件："; dim "$link_problems"; }
+elif [ "$sections" -eq 0 ]; then
+  fail "没有在 ${DOCS}/ 下找到任何板块目录，检查脚本可能已失效"
 else
-  fail "没有从 ${CONFIG} 里解析到任何链接，检查脚本可能已失效"
+  green "  ✓ ${sections} 个板块目录结构完整，${links} 个硬编码链接有效"
 fi
 
-echo "2/4  页面是否都挂进了侧边栏"
-orphans=0
+echo "2/4  页面标题（决定侧边栏显示的文字）"
+missing_title=""
 while IFS= read -r f; do
-  [ -z "$f" ] && continue
-  [ "$f" = "${DOCS}/index.md" ] && continue   # 首页是 layout: home，不需要挂
-  rel="${f#${DOCS}/}"
-  case "$rel" in
-    */index.md) link="/${rel%index.md}" ;;
-    *)          link="/${rel%.md}" ;;
-  esac
-  if ! grep -qF "link: '${link}'" "$CONFIG"; then
-    fail "页面没有挂进侧边栏：${f}"
-    dim "      在 config.mts 加一行：{ text: '标题', link: '${link}' }"
-    orphans=$((orphans + 1))
+  [ "$f" = "${DOCS}/index.md" ] && continue   # 首页是 layout: home，不需要标题
+  has=$(awk '
+    NR == 1 && $0 == "---" { infm = 1; next }
+    infm && /^---[[:space:]]*$/ { infm = 0; next }
+    infm && /^title:/ { print "yes"; exit }
+  ' "$f")
+  if [ -z "$has" ]; then
+    has=$(awk '
+      /^[[:space:]]*```/ { inblock = !inblock; next }
+      inblock { next }
+      /^# / { print "yes"; exit }
+    ' "$f")
   fi
+  [ -z "$has" ] && missing_title="${missing_title}  ${f}"$'\n'
 done < <(site_pages)
-[ "$orphans" -eq 0 ] && green "  ✓ 所有页面都已挂载"
+
+if [ -n "$missing_title" ]; then
+  fail "以下页面没有一级标题或 frontmatter title，侧边栏会显示文件名："
+  dim "$missing_title"
+else
+  green "  ✓ 所有页面都有标题"
+fi
 
 echo "3/4  缺少协议头的链接"
 # 形如 [nju-box](box.nju.edu.cn) 的写法会被当成相对路径，发布后必然 404

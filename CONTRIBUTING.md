@@ -40,6 +40,24 @@ make pr MSG="docs: 补充夏令营经验"                 # 提交、推送，�
 
 不想用 Makefile 也可以直接用 `npm run docs:dev`、`npm run docs:build` 等脚本。
 
+## 新增页面
+
+侧边栏根据目录结构**自动生成**，把 `.md` 放进对应板块目录即可，不需要修改任何配置。
+
+侧边栏显示的文字取正文的一级标题，所以**页面要有一级标题**。
+想控制它在侧边栏里的位置，就在文件开头加 `order`，数字越小越靠前：
+
+```markdown
+---
+order: 3
+---
+
+# 夏令营
+```
+
+`index.md` 永远排第一；没写 `order` 的排在末尾。
+完整规则见 <https://redkold.github.io/nju-cs-fe/guide/contributing>。
+
 ## 硬性要求
 
 - **不要提交大文件**。GitHub 单文件上限 100 MB，且提交后会永久留在 git 历史里。

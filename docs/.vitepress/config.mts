@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitepress'
+import { generateNav, generateSidebar } from './sidebar'
 
 /**
  * 站点部署在 https://redkold.github.io/nju-cs-fe/
@@ -28,115 +29,9 @@ export default defineConfig({
   themeConfig: {
     logo: '/logo.svg',
 
-    nav: [
-      { text: '使用指南', link: '/guide/' },
-      { text: '课程资料', link: '/courses/' },
-      {
-        text: '升学',
-        items: [
-          { text: '推免', link: '/postgrad/' },
-          { text: '出国', link: '/abroad/' }
-        ]
-      },
-      { text: '实习就业', link: '/career/' },
-      { text: '资源区', link: '/resources/' }
-    ],
-
-    sidebar: {
-      '/guide/': [
-        {
-          text: '使用指南',
-          items: [
-            { text: '资料库使用说明', link: '/guide/' },
-            { text: '培养方案与课程地图', link: '/guide/curriculum' },
-            { text: '四年时间线', link: '/guide/roadmap' },
-            { text: '如何贡献', link: '/guide/contributing' }
-          ]
-        }
-      ],
-      '/courses/': [
-        {
-          text: '课程资料',
-          items: [
-            { text: '课程资料总览', link: '/courses/' },
-            { text: '数学与统计', link: '/courses/math' },
-            { text: '计算机', link: '/courses/cs' },
-            { text: '金融与经济', link: '/courses/finance' }
-          ]
-        },
-        {
-          text: '配套资源',
-          items: [
-            { text: '教材与课件', link: '/resources/textbooks' },
-            { text: '历年真题', link: '/resources/past-exams' }
-          ]
-        }
-      ],
-      '/postgrad/': [
-        {
-          text: '推免',
-          items: [
-            { text: '推免总览', link: '/postgrad/' },
-            { text: '政策与资格', link: '/postgrad/policy' },
-            { text: '夏令营', link: '/postgrad/summer-camp' },
-            { text: '材料准备', link: '/postgrad/materials' },
-            { text: '面试经验', link: '/postgrad/interview' }
-          ]
-        },
-        {
-          text: '相关',
-          items: [
-            { text: '四年时间线', link: '/guide/roadmap' },
-            { text: '模板下载', link: '/resources/templates' }
-          ]
-        }
-      ],
-      '/abroad/': [
-        {
-          text: '出国',
-          items: [
-            { text: '出国总览', link: '/abroad/' },
-            { text: '申请时间线', link: '/abroad/timeline' },
-            { text: '选校与文书', link: '/abroad/application' },
-            { text: '语言考试', link: '/abroad/language-test' }
-          ]
-        },
-        {
-          text: '相关',
-          items: [
-            { text: '材料准备', link: '/postgrad/materials' },
-            { text: '模板下载', link: '/resources/templates' }
-          ]
-        }
-      ],
-      '/career/': [
-        {
-          text: '实习与就业',
-          items: [
-            { text: '总览', link: '/career/' },
-            { text: '量化方向', link: '/career/quant' }
-          ]
-        },
-        {
-          text: '相关',
-          items: [
-            { text: '课程资料', link: '/courses/' },
-            { text: '材料准备', link: '/postgrad/materials' }
-          ]
-        }
-      ],
-      '/resources/': [
-        {
-          text: '资源区',
-          items: [
-            { text: '资源总索引', link: '/resources/' },
-            { text: '教材与课件', link: '/resources/textbooks' },
-            { text: '历年真题', link: '/resources/past-exams' },
-            { text: '模板', link: '/resources/templates' }
-          ]
-        }
-      ]
-    },
+    // 导航与侧边栏都由目录结构自动生成，见 sidebar.ts
+    nav: generateNav(),
+    sidebar: generateSidebar(),
 
     search: {
       provider: 'local',
